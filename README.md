@@ -1,4 +1,4 @@
-##Tweet Classifier
+# Tweet Classifier
 
 A simple class project to classify a sample data-set of 1200 tweets to either positive or negative tweets, based on the
 type of words used in those tweet.
@@ -8,7 +8,7 @@ All data are located in the data directory.<br>
 PLUS_TRAINING_DATA = `data/processed_plus_data.txt`<br>
 MINUS_TRAINING_DATA = `data/processed_minus_data.txt`
 
-### Instructions:
+## Instructions:
 - To train the models, run `run_training.py`. First you should enter path to training data with
 `PLUS_TRAINING_DATA` and then with `MINUS_TRAINING_DATA`. After that you should select an algorithm
 to train. Options are `naiveBayes`, `logisticRegression`, `treeClassifier`.
