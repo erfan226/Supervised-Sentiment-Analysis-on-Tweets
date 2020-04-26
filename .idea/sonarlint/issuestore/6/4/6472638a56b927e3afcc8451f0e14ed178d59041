@@ -1,0 +1,19 @@
+
+spython:S1542¨"TRename function "Tree_k_fold" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(ÏĞ8ïàîãš.
+kpython:S117¨"MRename this parameter "X" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÏĞ8ïàîãš.
+kpython:S117¨"MRename this parameter "Y" to match the regular expression ^[_a-z][a-z0-9_]*$.(ÏĞ8ïàîãš.
+wpython:S117•"XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8¥ÇçÜš.
+>python:S125³"Remove this commented out code.(€ØÍğ8Âà†Ìš.
+wpython:S1542{"SRename function "KNN_k_fold" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(–¿ûÏúÿÿÿÿ8ÑşæÜš.
+vpython:S117 "WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8—Êãš.
+wpython:S117„"XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8øÖªÙš.
+wpython:S117 "XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8—Êãš.
+vpython:S117«"WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8ïàîãš.
+|python:S1192G"XDefine a constant instead of duplicating this literal 'data/logistic_model.pkl' 4 times.(ç‘Œÿÿÿÿÿ8®ëñÈš.
+xpython:S1542"XRename function "Logistic_k_fold" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(îø—Š8÷ª±ãš.
+wpython:S117«"XRename this local variable "X_train" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8ïàîãš.
+lpython:S117"MRename this parameter "X" to match the regular expression ^[_a-z][a-z0-9_]*$.(îø—Š8›Èãš.
+vpython:S117„"WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8øÖªÙš.
+vpython:S117•"WRename this local variable "X_test" to match the regular expression ^[_a-z][a-z0-9_]*$.(€ú…8¥ÇçÜš.
+zpython:S1542Œ"URename function "Bayes_k_fold" to match the regular expression ^[a-z_][a-z0-9_]{2,}$.(®ôÍÖúÿÿÿÿ8öéçÜš.
+lpython:S117"MRename this parameter "Y" to match the regular expression ^[_a-z][a-z0-9_]*$.(îø—Š8›Èãš.
