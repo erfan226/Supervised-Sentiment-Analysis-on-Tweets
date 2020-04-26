@@ -6,6 +6,7 @@ data2 = input('Enter data-set path for training: ')
 
 tweets, vectors, additional_data = run_script(data1, data2)
 
+# Removes labels from vectors
 x = [i[:-1] for i in vectors]
 y = []
 for i in vectors:
