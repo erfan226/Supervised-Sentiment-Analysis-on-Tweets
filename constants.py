@@ -1,6 +1,7 @@
 TREE_MODEL = "data/tree_model.pkl"
 LOGISTIC_MODEL = "data/logistic_model.pkl"
 BAYES_MODEL = "data/bayes_model.pkl"
+FINAL_MODEL = "data/final_model.pkl"
 KNN_PREDICTION = "data/knn_prediction.txt"
 BAYES_PREDICTION = "data/bayes_prediction.txt"
 TREE_PREDICTION = "data/tree_prediction.txt"

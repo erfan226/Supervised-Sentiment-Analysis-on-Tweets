@@ -2,20 +2,14 @@ from index import run_script, run_knn, run_logistic, run_naive_bayes, run_tree, 
 from utils import read_labels, show_estimation_utility
 import constants
 
-# data1 = input('Enter data-set path for training. (Ex: file.txt): ')
-# data2 = input('Enter data-set path for training: ')
-chosen_model = input('Enter model name for testing.'
+data1 = input('Enter data-set path for training. (Ex: file.txt): ')
+data2 = input('Enter data-set path for training: ')
+chosen_model = input('Enter model name for testing. '
                      'Options: KNN, naiveBayes, logisticRegression, treeClassifier, finalModel: ')
-# test_file = input('Enter test file: ')
-# test_labels_file = input('Enter test labels file: ')
+test_file = input('Enter test file: ')
+test_labels_file = input('Enter test labels file: ')
 
-# for test felan
-data1 = "data/processed_plus_data.txt"
-data2 = "data/processed_minus_data.txt"
-test_data = "data/test_file.txt"
-test_labels_file = "data/labels.txt"
-
-tweets, data_vectors, test_vector = run_script(data1, data2, test_data)
+tweets, data_vectors, test_vector = run_script(data1, data2, test_file)
 test_labels = read_labels(test_labels_file)
 
 if chosen_model == 'KNN':
@@ -36,7 +30,7 @@ elif chosen_model == 'treeClassifier':
     show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
 elif chosen_model == 'finalModel':
     print("Please wait for the results. It might take a while, but it will worth it! :)", sep="")
-    run_naive_bayes(test_vector, 'data/final_model.pkl')
+    run_naive_bayes(test_vector, constants.FINAL_MODEL)
     confusion_matrix, accuracy, precision_recall_fscore = run_evaluation(test_labels, constants.BAYES_PREDICTION)
     show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
 else:
