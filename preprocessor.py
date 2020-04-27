@@ -7,7 +7,16 @@ np.set_printoptions(threshold=sys.maxsize)
 
 
 class Preprocessor:
+    """
+    Preprocessor Core.
+    """
     def normalizer(self, data: list):
+        """
+        Normalizes the data with Hazm library.
+
+        :param list data: Data to be normalized
+        :return: Normalized data
+        """
         normalizer = Normalizer()
         normalized_data = []
         for item in data:
@@ -16,6 +25,12 @@ class Preprocessor:
         return normalized_data
 
     def tokenizer(self, data: list):
+        """
+        Tokenizes the data with Hazm library
+
+        :param list data: Data to be tokenized
+        :return: Tokenized list of documents
+        """
         tokenized_list = []
         for item in data:
             tokens = word_tokenize(item)
@@ -23,6 +38,14 @@ class Preprocessor:
         return tokenized_list
 
     def remove_stop_words(self, data: list, stops: list, lemmatize: bool):
+        """
+        Removes stopwords and filters the data.
+
+        :param list data: Data to be cleaned
+        :param list stops: A list of stopwords to check on with and remove them from data
+        :param bool lemmatize: If True, will also lemmatize tokens with Hazm library. Better not to use!
+        :return: Cleaned data
+        """
         output = []
         pattern = '[^\u0600-\u06FF#\r]'  # Remove numbers?
         for tokens in data:
@@ -48,6 +71,7 @@ class Preprocessor:
                 output.append(filtered_words)
         return output
 
+    # Below functions are not used and will be removed soon.
     def tokens_to_sentences(self, data: list):
         new_data = []
         for item in data:

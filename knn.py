@@ -3,16 +3,12 @@ import numpy as np
 
 class KNN:
     """
-    K Nearest Neighbor.
-    Parameters
-    ----------
-    k : {"best", "random"}, default="best"
-        The strategy used to choose the split at each node. Supported
-        strategies are "best" to choose the best split and "random" to choose
+    K Nearest Neighbors.
     """
     def calculate_distance(self, test_row, doc_row):
         """
         Takes a test vector at a time and uses Euclidean distance to calculate its distance from sample vectors.
+
         :param list test_row: A vector of test document consisting binary representation of features
         :param list doc_row: A vector of sample document consisting
         :return float:
@@ -25,6 +21,7 @@ class KNN:
     def get_neighbors(self, train, test_row, num_neighbors: int = 5):
         """
         Calculates and sorts the nearest neighbors to test vector.
+
         :param list train: A list of lists consisting sample vectors
         :param list test_row: A vector consisting feature values
         :param int num_neighbors: The K parameter
@@ -43,6 +40,7 @@ class KNN:
     def get_vote(self, neighbors_data):
         """
         Selects K nearest vectors to test vector.
+
         :param list neighbors_data: Includes nearest neighbors vectors and their distances
         :return int: Either 0 for positive class or 1 for negative class
         """
@@ -53,6 +51,7 @@ class KNN:
     def knn_predict(self, vectors, test_vector, k: int = 5):
         """
         Gets the K nearest neighbors and with that, predicts the class of the given test vector.
+
         :param list vectors: A list of lists consisting sample vectors
         :param list test_vector: A vector consisting feature values
         :param int k: Number of neighbors to be voted for class prediction as nearest neighbors

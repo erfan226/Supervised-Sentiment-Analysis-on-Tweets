@@ -20,10 +20,11 @@ tree_classifier = tree.DecisionTreeClassifier(max_depth=50, max_features=420)  #
 def run_script(data1, data2, test_data_file: str = None):
     """
     Executes as the entry program is executed to pass the data & vectors to other modules and functions.
+
     :param str data1: Path to training data file
     :param str data2: Path to training data file
     :param str test_data_file: Path to test file. Only set when testing & evaluating
-    :return tuple: Tokenized documents, vectors, feature vector and separated feature vectors
+    :return: Tokenized documents, vectors, feature vector and separated feature vectors
     """
     print("Processing...")
     # Preprocessed data-set are prepared for vector transformation
@@ -56,11 +57,12 @@ def run_script(data1, data2, test_data_file: str = None):
 
 def run_knn(vectors, test_vectors, labels=None):
     """
-    Runs the KNN algorithm.
-    :param ndarray vectors: An array of sample vectors
-    :param ndarray test_vectors: An array of test vectors
-    :param list labels:
-    :return:
+    Runs the K Nearest Neighbors algorithm and saves the predicted values to a file.
+
+    :param numpy.ndarray vectors: An array of sample vectors
+    :param numpy.ndarray test_vectors: An array of test vectors
+    :param list labels: Labels of test vectors to put it back in the vector
+    :return: None
     """
     predictions = []
     # Due to KNN Structure we need to put the labels back to its vectors. Bummer!
@@ -75,43 +77,90 @@ def run_knn(vectors, test_vectors, labels=None):
 
 
 def run_naive_bayes(test_vectors, model):
+    """
+    Runs the Naive Bayes algorithm with a model and saves the predicted values.
+
+    :param numpy.ndarray test_vectors: An array of test vectors
+    :param model: Predict with the chosen model
+    :return: None
+    """
     naive_model = utils.load_model(model)
     predictions = naive_bayes.predict_class(test_vectors, naive_model.docs_prob, naive_model.features_prob)
     utils.save_prediction(predictions, constants.BAYES_PREDICTION)
 
 
 def run_logistic(test_vectors):
+    """
+    Runs the Logistic Regression algorithm with a model and saves the predicted values.
+
+    :param numpy.ndarray test_vectors: An array of test vectors
+    :return: None
+    """
     logistic_regression = utils.load_model(constants.LOGISTIC_MODEL)
     predictions = logistic_regression.predict(test_vectors)
     utils.save_prediction(predictions, constants.LOGISTIC_PREDICTION)
 
 
 def run_tree(test_vectors):
+    """
+    Runs the Tree Classifier algorithm with a model and saves the predicted values.
+
+    :param numpy.ndarray test_vectors: An array of test vectors
+    :return: None
+    """
     tree_classifier = utils.load_model(constants.TREE_MODEL)
     predictions = tree_classifier.predict(test_vectors)
     utils.save_prediction(predictions, constants.TREE_PREDICTION)
 
 
 def train_naive_bayes(data):
-    # Data includes feature vector and other information from run_script()
+    """
+    Trains a model with Naive Bayes algorithm and save the model.\n
+    First it will calculate the probability of each class according to the number of its documents. Then it calculates
+    the probability of each feature from feature vector.
+
+    :param list data: Includes feature vector and other information from run_script()
+    :return: None
+    """
     naive_bayes.class_probability(data[3], data[4])
     naive_bayes.feature_probability(data[0], data[1], data[2])
     utils.save_model(constants.BAYES_MODEL, naive_bayes)
 
 
 def train_logistic(vectors):
+    """
+    Trains a model with Logistic Regression algorithm and save the model.\n
+    Before saving, the labels must be separated from vectors.
+
+    :param list vectors: Vectors of documents
+    :return: None
+    """
     x_train, y_train = utils.separate_labels(vectors)
     logistic_regression.fit(x_train, y_train)
     utils.save_model(constants.LOGISTIC_MODEL, logistic_regression)
 
 
 def train_tree(vectors):
+    """
+     Trains a model with Tree Classifier algorithm and save the model.\n
+     Before saving, the labels must be separated from vectors.
+
+     :param list vectors: Vectors of documents
+     :return: None
+     """
     x_train, y_train = utils.separate_labels(vectors)
     tree_classifier.fit(x_train, y_train)
     utils.save_model(constants.TREE_MODEL, tree_classifier)
 
 
 def run_evaluation(test_labels, predicted_labels):
+    """
+    Gives statistical information on the performance of given algorithm.
+
+    :param list test_labels: Real value of test labels
+    :param str predicted_labels: Predicted value of test labels
+    :return: Confusion Matrix, Accuracy, Precision, Recall, fMeasure
+    """
     predicted_labels = utils.read_labels(predicted_labels)
     co_matrix = confusion_matrix(test_labels, predicted_labels)
     accuracy = utils.estimate_accuracy(test_labels, predicted_labels)
@@ -122,10 +171,11 @@ def run_evaluation(test_labels, predicted_labels):
 
 def class_predictions(test_labels, predicted_labels):
     """
-    Shows prediction values for each class
-    :param list test_labels:
-    :param list predicted_labels:
-    :return dataFrame DataFrame:
+    Shows prediction values for each class.
+
+    :param list test_labels: Real value of test labels
+    :param list predicted_labels: Predicted value of test labels
+    :return: Prediction of all test documents for each class
     """
     t_labels = pd.Series(test_labels)
     p_labels = pd.Series(predicted_labels)
@@ -133,46 +183,79 @@ def class_predictions(test_labels, predicted_labels):
     return table
 
 
-def KNN_k_fold(X, Y):
+def KNN_k_fold(features, labels):
+    """
+    KFold estimation for K Nearest Neighbors algorithm. For k numbers it will split the data into train/test set
+    and trains, tests and evaluates the model.
+
+    :param numpy.ndarray features: Vector of documents
+    :param numpy.ndarray labels: Label of vectors
+    :return: None
+    """
     kf = KFold(n_splits=5, shuffle=True)
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        run_knn(X_train, X_test, y_train)
-        confusion_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.KNN_PREDICTION)
-        utils.show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
+    for train_index, test_index in kf.split(features):
+        x_train, x_test = features[train_index], features[test_index]
+        y_train, y_test = labels[train_index], labels[test_index]
+        run_knn(x_train, x_test, y_train)
+        co_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.KNN_PREDICTION)
+        utils.show_estimation_utility(co_matrix, accuracy, precision_recall_fscore)
 
 
-def Bayes_k_fold(X, Y,data: list):
+def Bayes_k_fold(features, labels, data: list):
+    """
+    KFold estimation for Naive Bayes algorithm. For k numbers it will split the data into train/test set
+    and trains, tests and evaluates the model.
+
+    :param numpy.ndarray features: Vector of documents
+    :param numpy.ndarray labels: Label of vectors
+    :param list data: Some information for bayes algorithm
+    :return: None
+    """
     kf = KFold(n_splits=5, shuffle=True)
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
+    for train_index, test_index in kf.split(features):
+        x_train, x_test = features[train_index], features[test_index]
+        y_train, y_test = labels[train_index], labels[test_index]
         train_naive_bayes(data)
-        run_naive_bayes(X_test, constants.BAYES_MODEL)
-        confusion_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.BAYES_PREDICTION)
-        utils.show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
+        run_naive_bayes(x_test, constants.BAYES_MODEL)
+        co_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.BAYES_PREDICTION)
+        utils.show_estimation_utility(co_matrix, accuracy, precision_recall_fscore)
 
 
-def Logistic_k_fold(X, Y):
+def Logistic_k_fold(features, labels):
+    """
+    KFold estimation for Logistic Regression algorithm. For k numbers it will split the data into train/test set
+    and trains, tests and evaluates the model.
+
+    :param numpy.ndarray features: Vector of documents
+    :param numpy.ndarray labels: Label of vectors
+    :return: None
+    """
     kf = KFold(n_splits=5, shuffle=True)
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        logistic_regression.fit(X_train, y_train)
+    for train_index, test_index in kf.split(features):
+        x_train, x_test = features[train_index], features[test_index]
+        y_train, y_test = labels[train_index], labels[test_index]
+        logistic_regression.fit(x_train, y_train)
         utils.save_model(constants.LOGISTIC_MODEL, logistic_regression)
-        run_logistic(X_test)
-        confusion_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.LOGISTIC_PREDICTION)
-        utils.show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
+        run_logistic(x_test)
+        co_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.LOGISTIC_PREDICTION)
+        utils.show_estimation_utility(co_matrix, accuracy, precision_recall_fscore)
 
 
-def Tree_k_fold(X, Y):
+def Tree_k_fold(features, labels):
+    """
+    KFold estimation for Tree Classifier algorithm. For k numbers it will split the data into train/test set
+    and trains, tests and evaluates the model.
+
+    :param numpy.ndarray features: Vector of documents
+    :param numpy.ndarray labels: Label of vectors
+    :return: None
+    """
     kf = KFold(n_splits=5, shuffle=True)
-    for train_index, test_index in kf.split(X):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = Y[train_index], Y[test_index]
-        tree_classifier.fit(X_train, y_train)
+    for train_index, test_index in kf.split(features):
+        x_train, x_test = features[train_index], features[test_index]
+        y_train, y_test = labels[train_index], labels[test_index]
+        tree_classifier.fit(x_train, y_train)
         utils.save_model(constants.TREE_MODEL, tree_classifier)
-        run_tree(X_test)
-        confusion_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.TREE_PREDICTION)
-        utils.show_estimation_utility(confusion_matrix, accuracy, precision_recall_fscore)
+        run_tree(x_test)
+        co_matrix, accuracy, precision_recall_fscore = run_evaluation(y_test.tolist(), constants.TREE_PREDICTION)
+        utils.show_estimation_utility(co_matrix, accuracy, precision_recall_fscore)

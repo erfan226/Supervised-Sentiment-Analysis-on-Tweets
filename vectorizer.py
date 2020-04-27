@@ -3,6 +3,7 @@ class Vectorizer:
     def feature_vector(self, data):
         """
         Takes the word tokens of documents and extracts a list of features from them.
+
         :param list data: List of lists that have word tokens
         :return: Extracted features of given documents
         """
@@ -14,6 +15,7 @@ class Vectorizer:
     def vecotrizer(self, features: list, row: list):
         """
         Takes a list of word tokens and converts them to number vectors according to features.
+
         :param list features: Extracted features
         :param list row: A list of binary representation of features
         :return: A list of converted document
@@ -29,6 +31,7 @@ class Vectorizer:
     def token_to_vector(self, features, plus_cls, minus_cls):
         """
         Converts documents to vectors and labels each document.
+
         :param list features: Extracted features
         :param list plus_cls: Tokens of positive class documents
         :param list minus_cls: Tokens of negative class documents
@@ -49,6 +52,7 @@ class Vectorizer:
     def test_data_token_to_vector(self, features, test_data):
         """
         Converts the given test documents to vectors.
+
         :param list features: Extracted features
         :param list test_data: Document to convert
         :return: Vector representation of document

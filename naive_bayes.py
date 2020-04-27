@@ -1,12 +1,10 @@
 class NaiveBayes:
     """
     Naive Bayes Algorithm.
-    Attributes
-    ----------
-    docs_prob: list
-        Probability of each document.
-    features_prob: list
-        Probability of each feature.
+
+    Attributes:
+        docs_prob (list): Probability of each document
+        features_prob (list): Probability of each feature
     """
     def __init__(self):
         self.docs_prob = []
@@ -15,6 +13,7 @@ class NaiveBayes:
     def class_probability(self, *args):
         """
         Takes the whole document and assigns a probability to each document.
+
         :param list args: Documents of each class in the form of word tokens
         :return list: Each index holds a probability of the corresponding document
         """
@@ -32,6 +31,7 @@ class NaiveBayes:
         """
         Takes all of the features and for each class, then assigns a probability to it.
         These probabilities are accessible through features_prob attribute.
+
         :param list features: All of the extracted features
         :param list args: The probability of each class
         """
@@ -51,6 +51,7 @@ class NaiveBayes:
         """
         Takes a test vector and based on the probability of each feature for each class,
         multiplies them with the probability of their class, then calculates the probability of the given vector.
+
         :param list test_vector: Vector to be tested
         :param list docs_prob: Probability of all classes
         :param list features_prob: Probability of all feature
@@ -58,9 +59,9 @@ class NaiveBayes:
         """
         cls_prob = []
         predicted_class = 0
-        # Avoid counting labels as features
         for i, doc_prob in enumerate(docs_prob):
             value = 1
+            # Avoid counting labels as features
             for j, feature in enumerate(test_vector[:-1]):
                 if feature == 1:
                     value = features_prob[i][j] * value
@@ -75,7 +76,8 @@ class NaiveBayes:
     def predict_class(self, test_vectors, docs_prob, features_prob):
         """
         Takes test vectors and for each, calculates its probability and assigns a class to it.
-        :param list test_vectors: List of all test vectors
+
+        :param numpy.ndarray test_vectors: List of all test vectors
         :param list docs_prob: Probability of all classes
         :param list features_prob: Probability of all feature
         :return list: Predicted class for each test vector
